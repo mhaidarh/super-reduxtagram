@@ -1,3 +1,4 @@
+import { composeWithDevTools } from 'redux-devtools-extension'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { browserHistory } from 'react-router'
@@ -25,11 +26,9 @@ const defaultState = {
   comments
 }
 
-const enhancers = compose(
-  window.devToolsExtension ? window.devToolsExtension() : (f) => f
-)
-
-const store = createStore(rootReducer, defaultState, middleware, enhancers)
+const store = createStore(rootReducer, defaultState, middleware, composeWithDevTools(
+  applyMiddleware(...middleware)
+))
 
 // we export history because we need it in `reduxstagram.js` to feed into <Router>
 export const history = syncHistoryWithStore(browserHistory, store)
