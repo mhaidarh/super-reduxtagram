@@ -3,4 +3,6 @@ import { render } from 'react-dom'
 
 import css from './styles/style.styl'
 
-render(<h1>Hello</h1>, document.getElementById('root'))
+import Main from './components/Main'
+
+render(<Main />, document.getElementById('root'))
