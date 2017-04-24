@@ -1,6 +1,11 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { browserHistory } from 'react-router'
+
+import { createLogger } from 'redux-logger'
+import thunk from 'redux-thunk'
+import promise from 'redux-promise-middleware'
+
 import rootReducer from './reducers/index'
 import comments from './data/comments'
 import posts from './data/posts'
@@ -13,6 +18,8 @@ import posts from './data/posts'
   2. An optional starting state - similar to React's getInitialState
 */
 
+const middleware = applyMiddleware(promise(), thunk, createLogger())
+
 const defaultState = {
   posts,
   comments
@@ -22,7 +29,7 @@ const enhancers = compose(
   window.devToolsExtension ? window.devToolsExtension() : (f) => f
 )
 
-const store = createStore(rootReducer, defaultState, enhancers)
+const store = createStore(rootReducer, defaultState, middleware, enhancers)
 
 // we export history because we need it in `reduxstagram.js` to feed into <Router>
 export const history = syncHistoryWithStore(browserHistory, store)
